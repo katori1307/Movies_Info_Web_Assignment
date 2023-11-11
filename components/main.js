@@ -1,38 +1,38 @@
 import top from "./top.js";
 import searchBar from "./searchBar.js";
-import { myFunction } from "./dbProvider.js";
 import { fetchMovies } from "./dbProvider.js";
 import data from "../db/data.js";
 import topRevenue from "./topRevenue.js";
+import mostPopularSlider from "./mostPopularSlider.js";
 import { computed } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
 
 export default {
     data() {
         return {
             movies: data.Movies,
+            most_popular_movies: data.MostPopularMovies,
             movie_detail: {},
             top_5_revenue: [],
+            top_15_popular: [],
         }
-    },
-    components: {
-        top, searchBar, topRevenue
     },
     provide() {
         return {
             top_5_revenue: computed(() => this.top_5_revenue),
+            top_15_popular: computed(() => this.top_15_popular)
         }
-
+    },
+    components: {
+        top, searchBar, topRevenue, mostPopularSlider
     },
     methods: {
         getMovies(query) {
             const promise = fetchMovies(query);
-            // console.log(promise);
             return promise;
         },
 
         sort_top_5_revenue() {
             const moviesCopies = [...this.movies];
-            // console.log(moviesCopies);
 
             moviesCopies.forEach((movie) => {
                 if (movie.boxOffice?.cumulativeWorldwideGross !== undefined) {
@@ -44,20 +44,29 @@ export default {
                 }
             });
             moviesCopies.sort((a, b) => b.boxOffice.cumulativeWorldwideGross - a.boxOffice.cumulativeWorldwideGross);
-            this.top_5_revenue = moviesCopies.slice(0, 5);
+            return moviesCopies.slice(0, 5);
             // console.log(this.top_5_revenue)
+        },
+        get_top_15_popular_movies() {
+            return this.most_popular_movies.slice(0, 15);
         }
     },
     async mounted() {
-        console.log(data);
+        console.log(data.MostPopularMovies);
         this.movie_detail = await this.getMovies("detail/movie/tt0012349");
         // console.log(this.movie_detail.detail.id);
         // console.log(data.Movies.length);
-        this.sort_top_5_revenue();
+        // this.sort_top_5_revenue();
+        this.top_5_revenue = this.sort_top_5_revenue();
+        this.top_15_popular = this.get_top_15_popular_movies();
+        console.log(this.top_15_popular);
     },
     template: `
-        <top/>
-        <searchBar/>
-        <topRevenue/>
+        <div class="container-movies-info">
+            <top/>
+            <searchBar/>
+            <topRevenue/>
+            <mostPopularSlider/>
+        </div>
     `,
 };

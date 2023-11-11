@@ -66,13 +66,30 @@ input:checked+.slider:before {
     align-items: center;
 }
 
-.carousel-inner {
-    height: 600px;
+.container-movies-info {
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.carousel-inner img {
+#topRevenue .carousel-inner {
+    height: 500px;
+}
+
+#topRevenue .carousel-inner img {
     position: absolute;
     top: 0;
     left: 50%;
     transform: translate(-50%, 0);
+}
+
+#topRevenue .carousel-item img {
+    width: 325px;
+}
+
+#mostPopularMovies .carousel-inner {
+    height: 320px;
+}
+
+#mostPopularMovies .carousel-item img {
+    width: 200px;
 }

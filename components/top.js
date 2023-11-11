@@ -1,6 +1,6 @@
 export default {
     template: `
-        <nav class="navbar navbar-light" style="background-color: #ffc3bf;">
+        <nav class="navbar navbar-light my-2" style="background-color: #ffc3bf;">
             <div class="container-fluid">
                 <a class="navbar-brand fw-bold">21127147</a>
                 <p class="text-center my-0 fs-2 fw-bold">Movies Info</p>
