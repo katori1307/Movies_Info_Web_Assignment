@@ -146,14 +146,6 @@ export default {
 
         getter = await this.getMovies("get/top50/");
         this.top_15_rating = getter.get.slice(0, 15);
-
-
-        // console.log(this.top_15_popular);
-        // console.log(this.top_popular.get.slice(0, 15));
-        // console.log("this.movies: ", this.movies);
-        // console.log("temp.get: ", this.temp.get);
-
-        // this.handleDarkMode();
     },
     template: `
         <div class="container-movies-info">
