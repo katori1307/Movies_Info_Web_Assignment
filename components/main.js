@@ -2,7 +2,6 @@ import top from "./top.js";
 import bottom from "./bottom.js";
 import searchBar from "./searchBar.js";
 import { fetchMovies } from "./dbProvider.js";
-import data from "../db/data.js";
 import topRevenue from "./topRevenue.js";
 import mostPopularSlider from "./mostPopularSlider.js";
 import topRatingSlider from "./topRatingSlider.js";
@@ -133,7 +132,6 @@ export default {
         },
     },
     async mounted() {
-        console.log(data);
         let getter = [];
 
         getter = await this.getMovies("get/movie/");
