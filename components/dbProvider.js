@@ -3,13 +3,12 @@ import data from "../db/data.js";
 
 export function fetchMovies(request) {
     const { type, m_class, pattern, params_obj } = parseRequest(request);
-    if (params_obj === undefined) {
-        console.log("obj is null");
-    }
     // console.log("Type:", type);
     // console.log("Class:", m_class);
     // console.log("Pattern:", pattern);
     // console.log("Params obj: ", params_obj);
+    // console.log(params_obj.page);
+    // console.log(params_obj.per_page);
     switch (type) {
         case "search":
             return Promise.resolve({
@@ -21,15 +20,48 @@ export function fetchMovies(request) {
                 items: data.Movies.filter((item) => item.title.toLowerCase().includes(pattern.toLowerCase())),
             });
         case "detail":
-            // console.log("is in detail case");
-            // console.log(data.Movies.find((item) => item.id === pattern));
             return Promise.resolve({
                 detail: data.Movies.find((item) => item.id === pattern),
             });
         case "get":
-            return Promise.resolve({
-                get: data.Movies.slice((params.page - 1) * params.per_page, params.page * params.per_page),
-            });
+            switch (m_class) {
+                case "movie":
+                    return Promise.resolve({
+                        get: data.Movies.slice(
+                            params_obj.per_page === 0 ? 0 : (params_obj.page - 1) * params_obj.per_page,
+                            params_obj.per_page === 0 ? data.Movies.length : params_obj.page * params_obj.per_page
+                        ),
+                    });
+
+                case "name":
+                    return Promise.resolve({
+                        get: data.Names.slice(
+                            params_obj.per_page === 0 ? 0 : (params_obj.page - 1) * params_obj.per_page,
+                            params_obj.per_page === 0 ? data.Names.length : params_obj.page * params_obj.per_page
+                        ),
+                    });
+                case "review":
+                    return Promise.resolve({
+                        get: data.Reviews.slice(
+                            params_obj.per_page === 0 ? 0 : (params_obj.page - 1) * params_obj.per_page,
+                            params_obj.per_page === 0 ? data.Reviews.length : params_obj.page * params_obj.per_page
+                        ),
+                    });
+                case "top50":
+                    return Promise.resolve({
+                        get: data.Top50Movies.slice(
+                            params_obj.per_page === 0 ? 0 : (params_obj.page - 1) * params_obj.per_page,
+                            params_obj.per_page === 0 ? data.Top50Movies.length : params_obj.page * params_obj.per_page
+                        ),
+                    });
+                case "mostpopular":
+                    return Promise.resolve({
+                        get: data.MostPopularMovies.slice(
+                            params_obj.per_page === 0 ? 0 : (params_obj.page - 1) * params_obj.per_page,
+                            params_obj.per_page === 0 ? data.MostPopularMovies.length : params_obj.page * params_obj.per_page
+                        ),
+                    });
+            }
     }
 }
 function parseRequest(request) {
@@ -47,7 +79,11 @@ function parseRequest(request) {
         return { type, m_class, pattern, params_obj };
     } else {
         const pattern = pattern_params;
-        return { type, m_class, pattern };
+        const params_obj = {
+            page: 0,
+            per_page: 0
+        };
+        return { type, m_class, pattern, params_obj };
     }
 }
 export function myFunction() {
@@ -62,48 +98,4 @@ export function myFunction() {
 
 
 
-
-
-
-
-
-
-
-// export default {
-//     data() {
-//         return {
-//             movies_data: data
-//         }
-//     },
-//     methods: {
-//         fetchMovies(request) {
-//             const { type, m_class, pattern, params } = this.parseRequest(request);
-//             console.log(this.parseRequest(request));
-
-//             switch (type) {
-//                 case "search":
-//                     break;
-//                 case "detail":
-//                     return Promise.resolve({
-//                         detail: this.movies_data.Movies.find((item) => item.id === pattern),
-//                     });
-//                 case "get":
-//                     break;
-//             }
-//         },
-//         parseRequest(request) {
-//             const [type, m_class, pattern_params] = request.split("/");
-//             const [pattern, params] = pattern_params.split("?");
-//             const params_obj = {};
-//             if (params !== "") {
-//                 const list_params = params.split("&");
-//                 list_params.forEach((param) => {
-//                     const [key, value] = param.split("=");
-//                     params_obj[key] = value;
-//                 });
-//             }
-//             return { type, m_class, pattern, params_obj }
-//         },
-//     },
-// };
 

@@ -69,6 +69,8 @@ input:checked+.slider:before {
 .container-movies-info {
     max-width: 1200px;
     margin: 0 auto;
+    background-color: #F0F0F0;
+    padding: 10px 20px;
 }
 
 #topRevenue .carousel-inner {
@@ -88,8 +90,37 @@ input:checked+.slider:before {
 
 #mostPopularMovies .carousel-inner {
     height: 320px;
+    width: 700px;
+    margin: 0 auto;
 }
 
 #mostPopularMovies .carousel-item img {
     width: 200px;
+}
+
+#topRatingMovies .carousel-inner {
+    height: 320px;
+    width: 700px;
+    margin: 0 auto;
+}
+
+#topRatingMovies .carousel-item img {
+    width: 200px;
+}
+
+#movieInfoTop {
+    background-color: #FFBF9B;
+}
+
+#searchBar {
+    background-color: #64CCC5;
+}
+
+#mostPopularAlert,
+#topRatingAlert {
+    background-color: #C0EEF2;
+}
+
+#moviesInfoBottom {
+    background-color: #E0C097;
 }
