@@ -1,5 +1,6 @@
 export default {
     inject: ['top_15_popular'],
+    emits: ['showMovieDetail'],
     template: `
         <div id="mostPopularAlert" class="categories_label alert alert-info fw-bold fs-3" role="alert">
             Most popular
@@ -18,7 +19,7 @@ export default {
                         <div class="row">
                             <template v-for="(movie, j) in top_15_popular.slice((i - 1) * 3, i * 3)">
                                 <div class="col">
-                                    <img :src="movie.image" class="d-block" alt="...">
+                                    <img :src="movie.image" class="d-block" alt="..." @click="$emit('showMovieDetail', movie.id)">
                                 </div>
                             </template>
                         </div>

@@ -13,7 +13,7 @@ export default {
             <div class="carousel-inner">
                 <template v-for="(movie, index) in top_5_revenue">
                     <div :class="{'carousel-item': true, 'active': index === 0}">
-                        <img :src="movie.image" class="d-block" alt="..." @click="$emit('showMovieDetail', movie)">
+                        <img :src="movie.image" class="d-block" alt="..." @click="$emit('showMovieDetail', movie.id)">
                     </div>                
                 </template>
             </div>

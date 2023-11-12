@@ -38,10 +38,13 @@ export function fetchMovies(request) {
                     });
 
                 case "name":
+                    const selected_movies = data.Movies.filter((item) => {
+                        return item.actorList.some((actor) => actor.name.toLowerCase().includes(pattern.toLowerCase()));
+                    });
                     return Promise.resolve({
-                        get: data.Names.slice(
+                        get: selected_movies.slice(
                             params_obj.per_page === 0 ? 0 : (params_obj.page - 1) * params_obj.per_page,
-                            params_obj.per_page === 0 ? data.Names.length : params_obj.page * params_obj.per_page
+                            params_obj.per_page === 0 ? selected_movies.length : params_obj.page * params_obj.per_page
                         ),
                     });
                 case "review":

@@ -14,6 +14,7 @@ export default {
     data() {
         return {
             movies: [],
+            get_obj: {},
             movie_detail: {},
             top_5_revenue: [],
             top_15_popular: [],
@@ -24,6 +25,7 @@ export default {
             search_obj: {},
             search_movies: [],
             show_searched_movies: false,
+
         }
     },
     provide() {
@@ -32,6 +34,7 @@ export default {
             top_15_popular: computed(() => this.top_15_popular),
             top_15_rating: computed(() => this.top_15_rating),
             movie_detail: computed(() => this.movie_detail),
+            search_movies: computed(() => this.search_movies),
         }
     },
     components: {
@@ -101,21 +104,36 @@ export default {
         reloadPage() {
             window.location.reload();
         },
-        showMovieDetail(details) {
+        async showMovieDetail(id) {
             this.showDetail = true;
-            this.movie_detail = details;
+            this.show_searched_movies = false;
+            this.get_obj = await this.getMovies("detail/movie/" + id);
+            // this.get_obj = await this.getMovies("detail/movie/tt4154756");
+            this.movie_detail = this.get_obj.detail;
             console.log(this.movie_detail);
         },
         async getSearchMovies(pattern) {
             this.show_searched_movies = true;
+            this.showDetail = false;
+            this.search_obj = {};
+            this.search_movies = [];
             this.search_obj = await this.getMovies("search/movie/" + pattern + "?per_page=9&page=1");
             this.search_movies = this.search_obj.items;
             console.log(this.search_movies);
-        }
-
+        },
+        async getMoviesByActors(pattern) {
+            this.show_searched_movies = true;
+            this.showDetail = false;
+            this.search_obj = {};
+            this.search_movies = [];
+            console.log(pattern);
+            this.search_obj = await this.getMovies("get/name/" + pattern + "?per_page=9&page=1");
+            this.search_movies = this.search_obj.get;
+            console.log(this.search_movies);
+        },
     },
     async mounted() {
-        // console.log(data);
+        console.log(data);
         let getter = [];
 
         getter = await this.getMovies("get/movie/");
@@ -129,6 +147,7 @@ export default {
         getter = await this.getMovies("get/top50/");
         this.top_15_rating = getter.get.slice(0, 15);
 
+
         // console.log(this.top_15_popular);
         // console.log(this.top_popular.get.slice(0, 15));
         // console.log("this.movies: ", this.movies);
@@ -140,17 +159,18 @@ export default {
         <div class="container-movies-info">
             <top @darkModeChange="handleDarkMode"/>
             <searchBar @reloadPage="reloadPage"
-                        @getSearchMovies="getSearchMovies"/>
+                        @getSearchMovies="getSearchMovies"
+                        @getMoviesByActors="getMoviesByActors"/>
             <div v-if="showDetail">
                 <movieDetail/>
             </div>
             <div v-else-if="show_searched_movies">
-                <searchedMovies/>
+                <searchedMovies @showMovieDetail="showMovieDetail"/>
             </div>
             <div v-else>
                 <topRevenue @showMovieDetail="showMovieDetail"/>
-                <mostPopularSlider />
-                <topRatingSlider />
+                <mostPopularSlider @showMovieDetail="showMovieDetail"/>
+                <topRatingSlider @showMovieDetail="showMovieDetail"/>
             </div>
             <bottom/>
         </div>

@@ -13,7 +13,7 @@ export default {
                             <h5 class="card-title"><strong>Directors:</strong></h5>
                             <template v-for="d in movie_detail.directorList">
                                 <p class="card-text">
-                                    {{d.name}}
+                                    {{d.name}},
                                 </p>
                             </template>
                         </div>

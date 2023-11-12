@@ -1,37 +1,28 @@
 export default {
+    inject: ['search_movies'],
     template: `
-        <div class="container my-2">
-            <div class="row">
-                <div class="col">
-                    <div class="card mb-3">
-                        <img src="..." class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card mb-3">
-                        <img src="..." class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card mb-3">
-                        <img src="..." class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                        </div>
-                    </div>
-                </div>
+        <div id="searchedMovies" class="container my-2">
+            <div class="row row-cols-3">
+                <template v-for="movie in search_movies">
+                    <div class="col my-2">  
+                        <div class="card mb-3 h-100">
+                            <img :src="movie.image" class="card-img-top img-thumbnail" alt="..." @click="$emit('showMovieDetail', movie.id)">
+                            <div class="card-body">
+                                <h5 class="card-title text-center fw-bold">{{movie.fullTitle}}</h5>
+                                <div class="gern-list">
+                                    <template v-for="g in movie.genreList">
+                                        <p class="card-text">
+                                            {{g.value}},
+                                        </p>
+                                    </template>
+                                </div>
+                                <p class="card-text text-center">
+                                    <strong>Rating:</strong> {{movie.ratings.imDb}}
+                                </p>
+                            </div>
+                        </div>                  
+                    </div>         
+                </template>
             </div>
         </div>
     `,

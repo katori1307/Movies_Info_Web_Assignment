@@ -98,6 +98,11 @@ input:checked+.slider:before {
     width: 200px;
 }
 
+#mostPopularMovies .carousel-item img:hover {
+    transform: scale(1.2);
+    transition: 0.2s ease;
+}
+
 #topRatingMovies .carousel-inner {
     height: 320px;
     width: 700px;
@@ -106,6 +111,11 @@ input:checked+.slider:before {
 
 #topRatingMovies .carousel-item img {
     width: 200px;
+}
+
+#topRatingMovies .carousel-item img:hover {
+    transform: scale(1.2);
+    transition: 0.2s ease;
 }
 
 #movieInfoTop {
@@ -156,4 +166,11 @@ input:checked+.slider:before {
 
 #movieDetail #plot {
     font-size: 18px;
+}
+
+#searchedMovies .gern-list {
+    height: auto;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
 }
