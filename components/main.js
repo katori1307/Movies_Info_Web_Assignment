@@ -24,7 +24,6 @@ export default {
             search_obj: {},
             search_movies: [],
             show_searched_movies: false,
-
         }
     },
     provide() {
@@ -107,7 +106,6 @@ export default {
             this.showDetail = true;
             this.show_searched_movies = false;
             this.get_obj = await this.getMovies("detail/movie/" + id);
-            // this.get_obj = await this.getMovies("detail/movie/tt4154756");
             this.movie_detail = this.get_obj.detail;
             console.log(this.movie_detail);
         },
