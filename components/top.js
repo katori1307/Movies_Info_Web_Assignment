@@ -5,7 +5,7 @@ export default {
         }
     },
     template: `
-        <nav id="movieInfoTop" class="navbar navbar-light my-2">
+        <nav id="movieInfoTop" class="navbar navbar-light my-2 rounded-2">
             <div class="container-fluid">
                 <a class="navbar-brand fw-bold">21127147</a>
                 <p class="text-center my-0 fs-2 fw-bold">Movies Info</p>

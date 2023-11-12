@@ -11,13 +11,17 @@ export function fetchMovies(request) {
     // console.log(params_obj.per_page);
     switch (type) {
         case "search":
+            const selected_movies = data.Movies.filter((item) => item.title.toLowerCase().includes(pattern.toLowerCase()));
             return Promise.resolve({
                 search: pattern,
                 page: params_obj.page || 1,
                 per_page: params_obj.per_page,
                 total_page: Math.ceil(data.Movies.length / params_obj.per_page),
                 total: data.Movies.length,
-                items: data.Movies.filter((item) => item.title.toLowerCase().includes(pattern.toLowerCase())),
+                items: selected_movies.slice(
+                    params_obj.per_page === 0 ? 0 : (params_obj.page - 1) * params_obj.per_page,
+                    params_obj.per_page === 0 ? selected_movies.length : params_obj.page * params_obj.per_page
+                ),
             });
         case "detail":
             return Promise.resolve({
@@ -67,10 +71,10 @@ export function fetchMovies(request) {
 function parseRequest(request) {
     const [type, m_class, pattern_params] = request.split("/");
     if (pattern_params.includes("?")) {
-        const [pattern, params] = pattern_params.split("?").trim();
+        const [pattern, params] = pattern_params.split("?");
         const params_obj = {};
         if (params !== "") {
-            const list_params = params.split("&").trim();
+            const list_params = params.split("&");
             list_params.forEach((param) => {
                 const [key, value] = param.split("=");
                 params_obj[key] = value;

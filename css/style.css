@@ -69,7 +69,7 @@ input:checked+.slider:before {
 .container-movies-info {
     max-width: 1200px;
     margin: 0 auto;
-    background-color: #F0F0F0;
+    background-color: #F8EFD4;
     padding: 10px 20px;
 }
 
@@ -116,6 +116,11 @@ input:checked+.slider:before {
     background-color: #64CCC5;
 }
 
+#searchBar i:hover {
+    transform: scale(1.5);
+    transition: transform 0.2s ease;
+}
+
 #mostPopularAlert,
 #topRatingAlert {
     background-color: #C0EEF2;
@@ -123,4 +128,32 @@ input:checked+.slider:before {
 
 #moviesInfoBottom {
     background-color: #E0C097;
+}
+
+#movieDetail {
+    background-color: #FBDCC4;
+}
+
+#movieDetail .director-list,
+#movieDetail .actor-list,
+#movieDetail .gern-list {
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#movieDetail p {
+    margin-bottom: 0;
+    height: 20px;
+}
+
+#movieDetail .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#movieDetail #plot {
+    font-size: 18px;
 }

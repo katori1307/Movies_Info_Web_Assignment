@@ -6,6 +6,8 @@ import data from "../db/data.js";
 import topRevenue from "./topRevenue.js";
 import mostPopularSlider from "./mostPopularSlider.js";
 import topRatingSlider from "./topRatingSlider.js";
+import movieDetail from "./movieDetail.js";
+import searchedMovies from "./searchedMovies.js";
 import { computed } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
 
 export default {
@@ -17,6 +19,11 @@ export default {
             top_15_popular: [],
             top_popular: [],
             top_15_rating: [],
+            showDetail: false,
+            search_pattern: "",
+            search_obj: {},
+            search_movies: [],
+            show_searched_movies: false,
         }
     },
     provide() {
@@ -24,17 +31,17 @@ export default {
             top_5_revenue: computed(() => this.top_5_revenue),
             top_15_popular: computed(() => this.top_15_popular),
             top_15_rating: computed(() => this.top_15_rating),
+            movie_detail: computed(() => this.movie_detail),
         }
     },
     components: {
-        top, searchBar, topRevenue, mostPopularSlider, topRatingSlider, bottom
+        top, searchBar, topRevenue, mostPopularSlider, topRatingSlider, bottom, movieDetail, searchedMovies
     },
     methods: {
         getMovies(query) {
             const promise = fetchMovies(query);
             return promise;
         },
-
         sort_top_5_revenue() {
             const moviesCopies = [...this.movies];
             moviesCopies.forEach((movie) => {
@@ -71,12 +78,10 @@ export default {
                     "background-color": "#5C3D2E",
                     "color": "beige",
                 });
-
-
             } else {
                 const body = $(".container-movies-info");
                 body.css({
-                    "background-color": "#F0F0F0",
+                    "background-color": "#F8EFD4",
                 });
                 $("#movieInfoTop").css({
                     "background-color": "#FFBF9B",
@@ -92,13 +97,26 @@ export default {
                     "color": "#5C3D2E",
                 });
             }
+        },
+        reloadPage() {
+            window.location.reload();
+        },
+        showMovieDetail(details) {
+            this.showDetail = true;
+            this.movie_detail = details;
+            console.log(this.movie_detail);
+        },
+        async getSearchMovies(pattern) {
+            this.show_searched_movies = true;
+            this.search_obj = await this.getMovies("search/movie/" + pattern + "?per_page=9&page=1");
+            this.search_movies = this.search_obj.items;
+            console.log(this.search_movies);
         }
 
     },
     async mounted() {
-        console.log(data);
+        // console.log(data);
         let getter = [];
-        this.movie_detail = await this.getMovies("detail/movie/tt0012349");
 
         getter = await this.getMovies("get/movie/");
         this.movies = getter.get;
@@ -121,10 +139,19 @@ export default {
     template: `
         <div class="container-movies-info">
             <top @darkModeChange="handleDarkMode"/>
-            <searchBar/>
-            <topRevenue/>
-            <mostPopularSlider/>
-            <topRatingSlider/>
+            <searchBar @reloadPage="reloadPage"
+                        @getSearchMovies="getSearchMovies"/>
+            <div v-if="showDetail">
+                <movieDetail/>
+            </div>
+            <div v-else-if="show_searched_movies">
+                <searchedMovies/>
+            </div>
+            <div v-else>
+                <topRevenue @showMovieDetail="showMovieDetail"/>
+                <mostPopularSlider />
+                <topRatingSlider />
+            </div>
             <bottom/>
         </div>
     `,
